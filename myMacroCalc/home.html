@@ -6,6 +6,13 @@
     <meta http-equiv="refresh" content="1">
     <title>Macro calculator</title>
     <style>
+
+        body { 
+            padding-top: 10%;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
         form {
             max-width: 600px;
             margin: 0 auto;
@@ -28,6 +35,41 @@
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+
+        }
+
+        table {
+            width: 600px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td { 
+            border: 1px solid #ddd;
+        }
+
+        th, td { 
+            padding: 12px; 
+            text-align: left;
+        }
+        th {
+            background-color: #4caf50;
+            color: white;
+
+        }
+
+        h1 {
+            text-align: center;
+            padding-bottom: 20px;
+
         }
 
 
@@ -61,7 +103,74 @@
         </select>
 
         <label for="goal">Goal:</label>
+        <select id="goal" name="goal">
+            <option value="0">Maintain weight</option>
+            <option value="0">Lose weight</option>
+            <option value="0">Gain weight</option>
+        </select>
+
+        <button type="button" onclick="calculateNutrients()">Calculate</button>
     </form>
+
+    <table id="resultTable" style="display:none;">
+        <thread>
+            <tr>
+                <th>Nutrients</th>
+                <th>Results</th>
+            </tr>
+        </thread>
+
+        <tbody>
+            <tr>
+                <td>Protein</td>
+                <td id="proteinResult"></td>
+            </tr>
+            <tr>
+                <td>Carbs</td>
+                <td id="carbResult"></td>
+            </tr>
+
+            <tr>
+                <td>Fat</td>
+                <td id="fatResult"></td>
+            </tr>
+
+            <tr>
+                <td>Calories</td>
+                <td id="calorieResult"></td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <script>
+        function calculateNutrients() { 
+
+
+            const age = document.getElementById('age').value();
+            const gender = document.getElementById('gender').value();
+            const height = document.getElementById('height').value();
+            const weight = document.getElementById('weight').value();
+            const activity = document.getElementById('activity').value();
+            const goal = document.getElementById('goal').value();
+
+            let genderKcal = gender == 0 ? 5 : -161;
+            let bmr = 10 * weight + 6.25 * height - 5 * age + genderKcal;
+            let calories = bmr * (activity * 0.175 + 1.2) + (goal == 0 ? 0 : goal == 1 ? -500 : 500);
+
+            let protein = calories * 0.3 / 4;
+            let carb = calories * 0.4 / 4;
+            let fat = calories * 0.3 / 9;
+
+            document.getElementById('proteinResult').innerHTML = Math.round(protein) + 'g';
+            document.getElementById('carbsResult').innerHTML = Math.round(carb) + 'g';
+            document.getElementById('fatResult').innerHTML = Math.round(fat) + 'g';
+            document.getElementById('caloriesResult').innerHTML = Math.round(calories) + 'g';
+            document.getElementById('resultTable').style.display = 'table';
+
+        }
+    </script>
     
     
 </body>
